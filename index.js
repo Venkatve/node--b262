@@ -1,13 +1,27 @@
 // const express = require("express");
 import express from "express";
-import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
+
+import {managerRouter} from "./routes/manager.js";
+import{usersRouter} from "./routes/user.js";
+
+import{
+    getManagers,
+    createManagers,
+    createUsers,
+    deleteUsers,
+    getUsers,
+    updateUserById,
+    deleteUserByID,
+    getUsersById
+} from "./helper.js"
 const app = express();
-const PORT = process.env.PORT;
+import bcrypt from "bcrypt";
+
 
 dotenv.config();
 app.use(express.json());
-
+const PORT = process.env.PORT;
 const users = [
     {
     "createdAt": "2021-10-01T00:49:47.780Z",
@@ -90,79 +104,14 @@ const users = [
     "id": "14"
     }
     ]
-// console.log(process.env);
-
-    async function createconnection(){
-        // const MONGO_URL = "mongodb://0.0.0.0:27017/users";
-        const MONGO_URL = process.env.MONGO_URL;
-        const client = new MongoClient(MONGO_URL);
-
-        await client.connect();
-        console.log("connected success")
-        // const insertData = client.db("users").collection("people").insertMany(users);
-        return client;
-        // const user = await client.db("users").collection("people").findOne({id:"5"})
-        // console.log(user);
-
-    }
-
 app.get("/",(request,response)=>{
-    response.send("hi");
-});
-app.get("/users/:id",async(request,response)=>{
-    const { id } = request.params;
-    const client = await createconnection();
-    const user = await client.db("users").collection("people").findOne({id:id})
-    response.send(user);
-    console.log(user)
+    response.send("welcome from local environment");
 });
 
-app.delete("/users/:id",async(request,response)=>{
-    const { id } = request.params;
-    const client = await createconnection();
-    const user = await client.db("users").collection("people").deleteOne({id:id})
-    response.send(user);
-    console.log(user)
-});
-
-app.patch("/users/:id",async(request,response)=>{
-    const { id } = request.params;
-    const client = await createconnection();
-    console.log(id,request.body);
-    const newData=request.body;
-
-    const user = await client.db("users").collection("people").updateOne({id:id},{$set : newData})
-    response.send(user);
-    console.log(user)
-});
-
-app.get("/users",async (request,response)=>{
-    // const { color , age: ageGt } = request.query;
-    const client = await createconnection();
-    const users = await client.db("users").collection("people").find({}).toArray();
-    response.send(users);
-    console.log(users);
-
-});
-
-app.delete("/users",async (request,response)=>{
-    // const { color , age: ageGt } = request.query;
-    const client = await createconnection();
-    const users = await client.db("users").collection("people").deleteMany({});
-    response.send(users);
-    console.log(users);
-
-});
-
-app.post("/users",async (request,response)=>{
-    // const { color , age: ageGt } = request.query;
-    const client = await createconnection();
-    const adduser = request.body;
-    const result = await client.db("users").collection("people").insertMany(adduser);
-    console.log(adduser, result);
-    response.send(result);
-});
+app.use("/managers",managerRouter);
+app.use("/users",usersRouter)
 app.listen(PORT, ()=> console.log("started server"))
+
 
 // if(!color && !ageGt){
 //     response.send(users)
