@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import {managerRouter} from "./routes/manager.js";
 import{usersRouter} from "./routes/user.js";
 import{moviesRouter} from "./routes/movies.js";
-
+import cors from "cors";
 // import{
 //     getManagers,
 //     createManagers,
@@ -24,6 +24,7 @@ import bcrypt from "bcrypt";
 
 dotenv.config();
 app.use(express.json());
+app.use(cors());
 const PORT = process.env.PORT;
 const users = [
     {
