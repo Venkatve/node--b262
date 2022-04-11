@@ -4,17 +4,20 @@ import dotenv from "dotenv";
 
 import {managerRouter} from "./routes/manager.js";
 import{usersRouter} from "./routes/user.js";
+import{moviesRouter} from "./routes/movies.js";
 
-import{
-    getManagers,
-    createManagers,
-    createUsers,
-    deleteUsers,
-    getUsers,
-    updateUserById,
-    deleteUserByID,
-    getUsersById
-} from "./helper.js"
+// import{
+//     getManagers,
+//     createManagers,
+//     createUsers,
+//     deleteUsers,
+//     getUsers,
+//     updateUserById,
+//     deleteUserByID,
+//     getUsersById,
+//     createMovies,
+//     getMovies
+// } from "./helper.js"
 const app = express();
 import bcrypt from "bcrypt";
 
@@ -109,7 +112,8 @@ app.get("/",(request,response)=>{
 });
 
 app.use("/managers",managerRouter);
-app.use("/users",usersRouter)
+app.use("/users",usersRouter);
+app.use("/movies",moviesRouter);
 app.listen(PORT, ()=> console.log("started server"))
 
 

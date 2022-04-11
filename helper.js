@@ -19,12 +19,20 @@ async function createUsers(client, adduser) {
     return await client.db("users").collection("people").insertMany(adduser);
 }
 
+async function createMovies(client, addMovies) {
+    return await client.db("users").collection("movies").insertMany(addMovies);
+}
+
 async function deleteUsers(client) {
     return await client.db("users").collection("people").deleteMany({});
 }
 
 async function getUsers(client) {
     return await client.db("users").collection("people").find({}).toArray();
+}
+
+async function getMovies(client) {
+    return await client.db("users").collection("movies").find({}).toArray();
 }
 
 async function updateUserById(client, id, newData) {
@@ -70,5 +78,7 @@ export{
     deleteUserByID,
     getUsersById,
     genPassword,
-    createconnection
+    createconnection,
+    createMovies,
+    getMovies
 }
